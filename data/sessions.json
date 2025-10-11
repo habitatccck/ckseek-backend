@@ -1,0 +1,24 @@
+{
+  "559e48c7-6857-495d-b34a-ec79721f0b57": {
+    "session_id": "559e48c7-6857-495d-b34a-ec79721f0b57",
+    "thread_id": "thread-559e48c7-6857-495d-b34a-ec79721f0b57",
+    "title": "杭州明天天气如何",
+    "created_at": "2025-10-11T19:54:14.275729",
+    "updated_at": "2025-10-11T19:54:20.321339",
+    "messages": [
+      {
+        "role": "user",
+        "content": "杭州明天天气如何",
+        "timestamp": "2025-10-11T19:54:20.320522",
+        "message_id": "601dc5e8-4946-49a9-b767-ad6580b6becc"
+      },
+      {
+        "role": "assistant",
+        "content": "明天（10月12日），杭州的天气预报如下：\n\n- **天气**：阴天\n- **白天气温**：最高27℃ \n- **夜间气温**：最低20℃\n- **风向**：东北风\n- **空气质量**：优\n\n对于外出活动，可以适当穿着轻便的服装，适合进行各种户外活动。更多详细信息可以参考 [这里](https://m.hz.bendibao.com/tianqi/tomorrow.shtm)。",
+        "timestamp": "2025-10-11T19:54:20.321312",
+        "message_id": "e542ddd2-863c-4485-9645-ce1fb3b441b8"
+      }
+    ],
+    "metadata": {}
+  }
+}
