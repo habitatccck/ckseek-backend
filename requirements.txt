@@ -1,0 +1,15 @@
+# Core dependencies
+langgraph>=0.6.6,<0.7.0
+langchain-openai>=0.1.22
+langchain-anthropic>=0.1.23
+langchain>=0.2.14
+python-dotenv>=1.0.1
+langchain-tavily>=0.1
+
+# API dependencies
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+
+# Additional dependencies
+pydantic>=2.0.0
+
