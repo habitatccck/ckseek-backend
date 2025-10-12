@@ -17,14 +17,15 @@ RUN apt-get update && apt-get install -y \
 
 # 复制依赖文件
 COPY requirements.txt .
-COPY pyproject.toml .
 
-# 安装 Python 依赖
+# 安装 Python 依赖（不包括项目本身）
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir -e .
 
-# 复制项目文件
+# 复制项目文件（在安装 editable 模式之前）
 COPY . .
+
+# 安装项目本身（editable 模式）
+RUN pip install --no-cache-dir -e .
 
 # 创建数据目录（如果不存在）
 RUN mkdir -p data
