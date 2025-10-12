@@ -30,9 +30,9 @@ RUN pip install --no-cache-dir -e .
 # 创建数据目录（如果不存在）
 RUN mkdir -p data
 
-# 暴露端口
+# 暴露端口（Railway 会自动设置 PORT 环境变量）
 EXPOSE 8000
 
-# 启动命令
-CMD ["uvicorn", "src.api.server:app", "--host", "0.0.0.0", "--port", "8000"]
+# 启动命令（使用 shell 形式以支持环境变量）
+CMD uvicorn src.api.server:app --host 0.0.0.0 --port ${PORT:-8000}
 
