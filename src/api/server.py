@@ -240,7 +240,8 @@ async def generate_stream(request: ChatRequest):
             message=request.message,
             thread_id=thread_id,
             session_id=request.session_id,
-            model=request.model or "openai/gpt-4o-mini",
+            model="openai/gpt-5-mini",
+            # model=request.model or "gpt-5-mini",
             system_prompt=request.system_prompt
         ),
         media_type="text/event-stream",
