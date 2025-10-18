@@ -113,13 +113,21 @@ async def stream_agent_response(
                 "thread_id": thread_id,
             }
         }
-        
-        # 准备输入
+
+        # 从 checkpoint 中获取之前的状态（包含历史消息）
+        existing_state = checkpointer.get(config)
+        existing_messages = []
+        if existing_state and existing_state.checkpoint:
+            existing_messages = existing_state.checkpoint.get("messages", [])
+
+        # 准备输入：将新消息添加到历史消息后面
+        # 这样 graph 能看到完整的对话历史
         input_data = {
-            "messages": [HumanMessage(content=message)]
+            "messages": existing_messages + [HumanMessage(content=message)]
         }
-        
+
         # 流式调用 graph（使用 context 参数）
+        # 不指定初始 input_data，让 graph 从 checkpoint 恢复状态
         async for chunk in graph.astream(
             input_data,
             config,
