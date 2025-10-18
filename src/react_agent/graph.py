@@ -21,7 +21,7 @@ from react_agent.utils import load_chat_model
 
 async def call_model(
     state: State, runtime: Runtime[Context]
-) -> Dict[str, List[AIMessage]]:
+) -> Dict[str, List[AIMessage] | Dict]:
     """Call the LLM powering our "agent".
 
     This function prepares the prompt, initializes the model, and processes the response.
@@ -31,7 +31,7 @@ async def call_model(
         config (RunnableConfig): Configuration for the model run.
 
     Returns:
-        dict: A dictionary containing the model's response message.
+        dict: A dictionary containing the model's response message and updated memory.
     """
     # Initialize the model with tool binding. Change the model or add more tools here.
     model = load_chat_model(runtime.context.model).bind_tools(TOOLS)
@@ -41,6 +41,11 @@ async def call_model(
         system_time=datetime.now(tz=UTC).isoformat()
     )
 
+    # Inject memory context into the system prompt
+    memory_context = state.memory.get_context(include_long_term=True)
+    if memory_context:
+        system_message = f"{system_message}\n\n{memory_context}"
+
     # Get the model's response
     response = cast(
         AIMessage,
@@ -48,6 +53,24 @@ async def call_model(
             [{"role": "system", "content": system_message}, *state.messages]
         ),
     )
+
+    # Add user's last message to short-term memory
+    if state.messages:
+        last_msg = state.messages[-1]
+        if hasattr(last_msg, 'content') and isinstance(last_msg.content, str):
+            state.memory.add_short_term(
+                f"User: {last_msg.content}",
+                tags=["user_input"],
+                source="conversation"
+            )
+
+    # Add model's response to short-term memory
+    if response.content:
+        state.memory.add_short_term(
+            f"Assistant: {response.content}",
+            tags=["assistant_response"],
+            source="conversation"
+        )
 
     # Handle the case when it's the last step and the model still wants to use a tool
     if state.is_last_step and response.tool_calls:
@@ -57,11 +80,12 @@ async def call_model(
                     id=response.id,
                     content="Sorry, I could not find an answer to your question in the specified number of steps.",
                 )
-            ]
+            ],
+            "memory": state.memory
         }
 
     # Return the model's response as a list to be added to existing messages
-    return {"messages": [response]}
+    return {"messages": [response], "memory": state.memory}
 
 
 # Define a new graph

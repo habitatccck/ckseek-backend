@@ -2,7 +2,7 @@
 
 import json
 import uuid
-from typing import Any, AsyncGenerator, Dict, Optional
+from typing import Any, AsyncGenerator, Dict, List, Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -12,6 +12,7 @@ from pydantic import BaseModel
 
 from react_agent.context import Context
 from react_agent.graph import graph
+from react_agent.memory import MemoryManager
 from .session_manager import session_manager, Session, SessionSummary
 
 app = FastAPI(
@@ -55,6 +56,26 @@ class StartSessionRequest(BaseModel):
 class SessionDetailRequest(BaseModel):
     """获取会话详情请求模型."""
     session_id: str
+
+
+class AddMemoryRequest(BaseModel):
+    """添加内存请求模型."""
+    content: str
+    importance: float = 1.0
+    tags: List[str] = []
+    session_id: Optional[str] = None
+    memory_type: str = "short_term"  # "short_term" 或 "long_term"
+
+
+class GetMemoryRequest(BaseModel):
+    """获取内存请求模型."""
+    session_id: Optional[str] = None
+    memory_type: str = "short_term"  # "short_term" 或 "long_term"
+    tags: List[str] = []
+
+
+# 全局内存管理器（可选，用于跨会话的长期记忆）
+global_memory_manager = MemoryManager()
 
 
 async def stream_agent_response(
@@ -186,11 +207,22 @@ async def root():
         "name": "React Agent API",
         "version": "1.0.0",
         "endpoints": {
-            "stream": "/api/generate/stream",
-            "start_new_session": "/api/start_new_session",
-            "history_list": "/api/history_list",
-            "session_detail": "/api/session_detail/{session_id}",
-            "docs": "/docs"
+            "chat": {
+                "stream": "/api/generate/stream",
+                "start_new_session": "/api/start_new_session",
+                "history_list": "/api/history_list",
+                "session_detail": "/api/session_detail/{session_id}"
+            },
+            "memory": {
+                "add": "/api/memory/add",
+                "get": "/api/memory/get",
+                "summarize": "/api/memory/summarize",
+                "clear": "/api/memory/clear",
+                "context": "/api/memory/context",
+                "stats": "/api/memory/stats"
+            },
+            "docs": "/docs",
+            "health": "/health"
         }
     }
 
@@ -385,6 +417,221 @@ async def get_session_detail(session_id: str):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"获取会话详情失败: {str(e)}")
+
+
+@app.post("/api/memory/add")
+async def add_memory(request: AddMemoryRequest):
+    """
+    添加内存条目.
+
+    允许手动添加短期或长期内存条目。
+
+    Args:
+        request: 包含内存内容、重要性、标签等信息
+
+    Returns:
+        成功/失败状态
+
+    Example:
+        POST /api/memory/add
+        {
+            "content": "用户关于 Python 的重要信息",
+            "importance": 8.0,
+            "tags": ["python", "important"],
+            "memory_type": "long_term"
+        }
+    """
+    try:
+        if request.memory_type == "short_term":
+            global_memory_manager.add_short_term(
+                content=request.content,
+                importance=request.importance,
+                tags=request.tags
+            )
+        else:  # long_term
+            global_memory_manager.add_long_term(
+                content=request.content,
+                importance=request.importance,
+                tags=request.tags
+            )
+
+        return {
+            "status": "success",
+            "message": f"已添加到{request.memory_type}记忆"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"添加内存失败: {str(e)}")
+
+
+@app.post("/api/memory/get")
+async def get_memory(request: GetMemoryRequest):
+    """
+    获取内存内容.
+
+    检索短期或长期内存中的条目。可以通过标签过滤。
+
+    Args:
+        request: 包含内存类型、标签等过滤条件
+
+    Returns:
+        内存条目列表
+
+    Example:
+        POST /api/memory/get
+        {
+            "memory_type": "short_term",
+            "tags": ["python"]
+        }
+    """
+    try:
+        if request.memory_type == "short_term":
+            if request.tags:
+                entries = global_memory_manager.short_term.get_by_tags(request.tags)
+            else:
+                entries = global_memory_manager.short_term.get_all()
+        else:  # long_term
+            if request.tags:
+                entries = global_memory_manager.long_term.get_by_tags(request.tags)
+            else:
+                entries = global_memory_manager.long_term.get_all()
+
+        return {
+            "status": "success",
+            "memory_type": request.memory_type,
+            "count": len(entries),
+            "entries": entries
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"获取内存失败: {str(e)}")
+
+
+@app.post("/api/memory/summarize")
+async def summarize_memory():
+    """
+    总结短期记忆并转移到长期记忆.
+
+    这个端点在会话结束时调用，用于保存关键信息到长期记忆。
+
+    Returns:
+        总结结果
+
+    Example:
+        POST /api/memory/summarize
+        {}
+    """
+    try:
+        short_term_entries = global_memory_manager.short_term.get_all()
+
+        if short_term_entries:
+            # 创建摘要
+            summary = f"会话总结: {len(short_term_entries)} 条对话记录。" + \
+                     "\n".join([f"- {entry}" for entry in short_term_entries[:5]])
+
+            global_memory_manager.summarize_short_term(
+                summary=summary,
+                tags=["session_summary"]
+            )
+
+            return {
+                "status": "success",
+                "message": "已将短期记忆总结到长期记忆",
+                "short_term_entries_count": len(short_term_entries)
+            }
+        else:
+            return {
+                "status": "success",
+                "message": "短期记忆为空，无需总结",
+                "short_term_entries_count": 0
+            }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"总结内存失败: {str(e)}")
+
+
+@app.post("/api/memory/clear")
+async def clear_memory(memory_type: str = "short_term"):
+    """
+    清除内存.
+
+    清除指定类型的内存（短期或长期）。
+
+    Args:
+        memory_type: "short_term" 或 "long_term"
+
+    Returns:
+        清除结果
+
+    Example:
+        POST /api/memory/clear?memory_type=short_term
+    """
+    try:
+        if memory_type == "short_term":
+            global_memory_manager.short_term.clear()
+        elif memory_type == "long_term":
+            global_memory_manager.long_term.clear()
+        elif memory_type == "all":
+            global_memory_manager.clear_all()
+        else:
+            raise ValueError(f"无效的 memory_type: {memory_type}")
+
+        return {
+            "status": "success",
+            "message": f"已清除{memory_type}记忆"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"清除内存失败: {str(e)}")
+
+
+@app.get("/api/memory/context")
+async def get_memory_context():
+    """
+    获取格式化的内存上下文.
+
+    返回可用于系统提示注入的格式化内存内容。
+
+    Returns:
+        格式化的内存上下文
+
+    Example:
+        GET /api/memory/context
+    """
+    try:
+        context = global_memory_manager.get_context(include_long_term=True)
+        return {
+            "status": "success",
+            "context": context if context else "没有可用的内存上下文"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"获取内存上下文失败: {str(e)}")
+
+
+@app.get("/api/memory/stats")
+async def get_memory_stats():
+    """
+    获取内存统计信息.
+
+    返回短期和长期内存的统计数据。
+
+    Returns:
+        内存统计信息
+
+    Example:
+        GET /api/memory/stats
+    """
+    try:
+        return {
+            "status": "success",
+            "short_term": {
+                "count": len(global_memory_manager.short_term.entries),
+                "max_size": global_memory_manager.short_term.max_size
+            },
+            "long_term": {
+                "count": len(global_memory_manager.long_term.entries),
+                "max_summaries": global_memory_manager.long_term.max_summaries,
+                "ttl_days": global_memory_manager.long_term.ttl_days
+            }
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"获取内存统计失败: {str(e)}")
 
 
 @app.get("/health")
