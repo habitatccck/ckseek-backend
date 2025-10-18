@@ -129,6 +129,24 @@ class MemoryCheckpointSaver(BaseCheckpointSaver):
         """Get checkpoint tuple (same as get for this implementation)."""
         return self.get(config)
 
+    async def aget_tuple(self, config: Dict[str, Any]) -> Optional[CheckpointTuple]:
+        """Async version of get_tuple."""
+        return self.get_tuple(config)
+
+    async def aput(
+        self,
+        config: Dict[str, Any],
+        values: Dict[str, Any],
+        metadata: Dict[str, Any],
+        new_versions: ChannelVersions,
+    ) -> Optional[str]:
+        """Async version of put."""
+        return self.put(config, values, metadata, new_versions)
+
+    async def alist(self, config: Dict[str, Any], **kwargs) -> list[CheckpointTuple]:
+        """Async version of list."""
+        return self.list(config, **kwargs)
+
     def list(self, config: Dict[str, Any], **kwargs) -> list[CheckpointTuple]:
         """List all checkpoints for a thread.
 
@@ -164,6 +182,10 @@ class MemoryCheckpointSaver(BaseCheckpointSaver):
             checkpoint_file = self.checkpoint_dir / f"{thread_id}.json"
             if checkpoint_file.exists():
                 checkpoint_file.unlink()
+
+    async def adelete(self, config: Dict[str, Any]) -> None:
+        """Async version of delete."""
+        self.delete(config)
 
     def _serialize_values(self, values: Dict[str, Any]) -> Dict[str, Any]:
         """Serialize state values for storage.
