@@ -11,7 +11,7 @@ from langchain_core.messages import HumanMessage
 from pydantic import BaseModel
 
 from react_agent.context import Context
-from react_agent.graph import graph
+from react_agent.graph import graph, checkpointer
 from react_agent.memory import MemoryManager
 from .session_manager import session_manager, Session, SessionSummary
 
@@ -220,6 +220,13 @@ async def root():
                 "clear": "/api/memory/clear",
                 "context": "/api/memory/context",
                 "stats": "/api/memory/stats"
+            },
+            "checkpoint": {
+                "history": "/api/checkpoint/history/{thread_id}",
+                "memory_summary": "/api/checkpoint/memory-summary/{thread_id}",
+                "restore": "/api/checkpoint/restore/{thread_id}",
+                "cleanup": "/api/checkpoint/cleanup/{thread_id}",
+                "stats": "/api/checkpoint/stats"
             },
             "docs": "/docs",
             "health": "/health"
@@ -632,6 +639,173 @@ async def get_memory_stats():
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"获取内存统计失败: {str(e)}")
+
+
+@app.get("/api/checkpoint/history/{thread_id}")
+async def get_checkpoint_history(thread_id: str, limit: int = 10):
+    """
+    获取线程的 checkpoint 历史.
+
+    返回指定线程的所有 checkpoint 记录。
+
+    Args:
+        thread_id: 线程 ID
+        limit: 返回的最大 checkpoint 数量（默认 10）
+
+    Returns:
+        checkpoint 列表和统计信息
+
+    Example:
+        GET /api/checkpoint/history/thread-123?limit=5
+    """
+    try:
+        checkpoints = checkpointer.get_checkpoint_history(thread_id, limit=limit)
+
+        return {
+            "status": "success",
+            "thread_id": thread_id,
+            "count": len(checkpoints),
+            "checkpoints": [
+                {
+                    "checkpoint_id": cp.get("checkpoint_id"),
+                    "timestamp": cp.get("timestamp"),
+                    "step": cp.get("metadata", {}).get("step", 0)
+                }
+                for cp in checkpoints
+            ]
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"获取 checkpoint 历史失败: {str(e)}")
+
+
+@app.get("/api/checkpoint/memory-summary/{thread_id}")
+async def get_checkpoint_memory_summary(thread_id: str):
+    """
+    获取线程的内存总结.
+
+    返回指定线程的短期和长期内存统计。
+
+    Args:
+        thread_id: 线程 ID
+
+    Returns:
+        内存统计和示例条目
+
+    Example:
+        GET /api/checkpoint/memory-summary/thread-123
+    """
+    try:
+        summary = checkpointer.export_memory_summary(thread_id)
+
+        return {
+            "status": "success",
+            "data": summary
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"获取内存总结失败: {str(e)}")
+
+
+@app.get("/api/checkpoint/restore/{thread_id}")
+async def restore_from_checkpoint(thread_id: str):
+    """
+    从 checkpoint 恢复状态.
+
+    获取指定线程的最新 checkpoint 状态。
+
+    Args:
+        thread_id: 线程 ID
+
+    Returns:
+        恢复的状态信息
+
+    Example:
+        GET /api/checkpoint/restore/thread-123
+    """
+    try:
+        config = {
+            "configurable": {
+                "thread_id": thread_id
+            }
+        }
+
+        checkpoint_tuple = checkpointer.get(config)
+
+        if not checkpoint_tuple:
+            raise HTTPException(status_code=404, detail=f"找不到线程的 checkpoint: {thread_id}")
+
+        return {
+            "status": "success",
+            "thread_id": thread_id,
+            "checkpoint": {
+                "config": checkpoint_tuple.config,
+                "metadata": checkpoint_tuple.metadata,
+                "state_keys": list(checkpoint_tuple.values.keys())
+            }
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"恢复 checkpoint 失败: {str(e)}")
+
+
+@app.post("/api/checkpoint/cleanup/{thread_id}")
+async def cleanup_checkpoints(thread_id: str):
+    """
+    清理线程的 checkpoint.
+
+    删除指定线程的所有 checkpoint。
+
+    Args:
+        thread_id: 线程 ID
+
+    Returns:
+        清理结果
+
+    Example:
+        POST /api/checkpoint/cleanup/thread-123
+    """
+    try:
+        config = {
+            "configurable": {
+                "thread_id": thread_id
+            }
+        }
+
+        checkpointer.delete(config)
+
+        return {
+            "status": "success",
+            "message": f"已清理线程 {thread_id} 的所有 checkpoint"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"清理 checkpoint 失败: {str(e)}")
+
+
+@app.get("/api/checkpoint/stats")
+async def get_checkpoint_stats():
+    """
+    获取全局 checkpoint 统计.
+
+    返回系统级别的 checkpoint 统计信息。
+
+    Returns:
+        统计信息
+
+    Example:
+        GET /api/checkpoint/stats
+    """
+    try:
+        return {
+            "status": "success",
+            "total_threads": len(checkpointer._checkpoints),
+            "total_checkpoints": sum(
+                len(cps) for cps in checkpointer._checkpoints.values()
+            ),
+            "checkpoint_dir": str(checkpointer.checkpoint_dir),
+            "persist_to_file": checkpointer.persist_to_file
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"获取 checkpoint 统计失败: {str(e)}")
 
 
 @app.get("/health")

@@ -15,6 +15,8 @@ from react_agent.context import Context
 from react_agent.state import InputState, State
 from react_agent.tools import TOOLS
 from react_agent.utils import load_chat_model
+from react_agent.memory import MemoryManager
+from react_agent.memory_checkpoint import FileCheckpointSaver
 
 # Define the function that calls the model
 
@@ -136,5 +138,15 @@ builder.add_conditional_edges(
 # This creates a cycle: after using tools, we always return to the model
 builder.add_edge("tools", "call_model")
 
-# Compile the builder into an executable graph
-graph = builder.compile(name="ReAct Agent")
+# Create memory-based checkpoint saver for state persistence
+_memory_manager = MemoryManager()
+checkpointer = FileCheckpointSaver(
+    memory_manager=_memory_manager,
+    checkpoint_dir="checkpoints"
+)
+
+# Compile the builder into an executable graph with checkpointer
+graph = builder.compile(
+    name="ReAct Agent",
+    checkpointer=checkpointer
+)
