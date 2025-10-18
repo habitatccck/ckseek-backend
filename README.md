@@ -1,3 +1,5 @@
+lsof -ti:8000
+
 cd /Users/mac/Desktop/fullstack/ckseek/backend && source venv/bin/activate && python run_api.py
 
 # LangGraph ReAct Agent Template

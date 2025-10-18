@@ -83,10 +83,11 @@ async def call_model(
                     content="Sorry, I could not find an answer to your question in the specified number of steps.",
                 )
             ],
-            "memory": state.memory
+            "memory": state.memory  # Explicitly return memory to persist across turns
         }
 
     # Return the model's response as a list to be added to existing messages
+    # Memory is explicitly returned to ensure it persists across conversation turns
     return {"messages": [response], "memory": state.memory}
 
 
@@ -139,6 +140,7 @@ builder.add_conditional_edges(
 builder.add_edge("tools", "call_model")
 
 # Create memory-based checkpoint saver for state persistence
+# This global memory manager is used for cross-session long-term memory
 _memory_manager = MemoryManager()
 checkpointer = FileCheckpointSaver(
     memory_manager=_memory_manager,
@@ -150,3 +152,11 @@ graph = builder.compile(
     name="ReAct Agent",
     checkpointer=checkpointer
 )
+
+
+def get_shared_memory_manager() -> MemoryManager:
+    """Get the global memory manager instance for cross-session memory.
+
+    This ensures long-term memory persists across different conversation threads.
+    """
+    return _memory_manager

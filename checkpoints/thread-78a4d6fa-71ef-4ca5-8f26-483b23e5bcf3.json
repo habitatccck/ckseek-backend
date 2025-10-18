@@ -1,0 +1,210 @@
+[
+  {
+    "thread_id": "thread-78a4d6fa-71ef-4ca5-8f26-483b23e5bcf3",
+    "checkpoint_id": -1,
+    "timestamp": "2025-10-18T16:38:26.028036",
+    "values": {
+      "v": 4,
+      "ts": "2025-10-18T08:38:26.027932+00:00",
+      "id": "1f0abfdd-06bb-6090-bfff-968cfee8ffb8",
+      "channel_values": "{'__start__': {'messages': [HumanMessage(content='\u6211\u7684\u751f\u65e5\u662f9.20', additional_kwargs={}, response_metadata={})]}}",
+      "channel_versions": {
+        "__start__": 1
+      },
+      "versions_seen": {
+        "__input__": {}
+      },
+      "updated_channels": [
+        "__start__"
+      ]
+    },
+    "metadata": {
+      "source": "input",
+      "step": -1,
+      "parents": {}
+    },
+    "new_versions": {
+      "__start__": 1
+    }
+  },
+  {
+    "thread_id": "thread-78a4d6fa-71ef-4ca5-8f26-483b23e5bcf3",
+    "checkpoint_id": 0,
+    "timestamp": "2025-10-18T16:38:26.036101",
+    "values": {
+      "v": 4,
+      "ts": "2025-10-18T08:38:26.036051+00:00",
+      "id": "1f0abfdd-06ce-6dc0-8000-7102f98b0d87",
+      "channel_values": "{'messages': [HumanMessage(content='\u6211\u7684\u751f\u65e5\u662f9.20', additional_kwargs={}, response_metadata={}, id='5509f253-ebcf-46b7-82f8-a9d235fb328e')], 'branch:to:call_model': None}",
+      "channel_versions": {
+        "__start__": 2,
+        "messages": 2,
+        "branch:to:call_model": 2
+      },
+      "versions_seen": {
+        "__input__": {},
+        "__start__": {
+          "__start__": 1
+        }
+      },
+      "updated_channels": [
+        "branch:to:call_model",
+        "messages"
+      ]
+    },
+    "metadata": {
+      "source": "loop",
+      "step": 0,
+      "parents": {}
+    },
+    "new_versions": {
+      "__start__": 2,
+      "messages": 2,
+      "branch:to:call_model": 2
+    }
+  },
+  {
+    "thread_id": "thread-78a4d6fa-71ef-4ca5-8f26-483b23e5bcf3",
+    "checkpoint_id": 1,
+    "timestamp": "2025-10-18T16:38:38.089586",
+    "values": {
+      "v": 4,
+      "ts": "2025-10-18T08:38:38.089512+00:00",
+      "id": "1f0abfdd-79c2-64c6-8001-cee586fc048f",
+      "channel_values": "{'messages': [HumanMessage(content='\u6211\u7684\u751f\u65e5\u662f9.20', additional_kwargs={}, response_metadata={}, id='5509f253-ebcf-46b7-82f8-a9d235fb328e'), AIMessage(content='\u592a\u597d\u4e86\u2014\u2014\u4f60\u751f\u65e5\u662f9\u670820\u65e5\uff01  \\n- \u897f\u65b9\u661f\u5ea7\uff1a\u5904\u5973\u5ea7\uff088\u670823\u65e5\u20139\u670822\u65e5\uff09\u3002  \\n- \u4ece\u4eca\u5929\uff082025-10-18\uff09\u7b97\u8d77\uff0c\u4e0b\u6b21\u751f\u65e5\u8fd8\u6709 337 \u5929\uff082026-09-20\uff09\u3002  \\n- \u5982\u679c\u544a\u8bc9\u6211\u51fa\u751f\u5e74\u4efd\uff0c\u6211\u53ef\u4ee5\u5e2e\u4f60\u7b97\u5c5e\u76f8\u3001\u5e74\u9f84\u6216\u63d0\u4f9b\u66f4\u4e2a\u6027\u5316\u7684\u5efa\u8bae\u3002  \\n\\n\u9700\u8981\u6211\u5e2e\u4f60\u505a\u4ec0\u4e48\uff1f\u6bd4\u5982\u8bbe\u7f6e\u63d0\u9192\uff08\u6559\u4f60\u600e\u4e48\u5728\u624b\u673a/\u65e5\u5386\u91cc\u8bbe\u7f6e\uff09\u3001\u51c6\u5907\u793c\u7269/\u6d3e\u5bf9\u70b9\u5b50\u3001\u5199\u795d\u798f\u6587\u6848\u6216\u67e5\u5f53\u65e5\u7684\u661f\u5ea7\u8fd0\u52bf\uff1f', additional_kwargs={}, response_metadata={'finish_reason': 'stop', 'model_name': 'gpt-5-mini-2025-08-07'}, id='run--f9b637de-f308-42ca-9ef2-0e69b40e99e7', usage_metadata={'input_tokens': 202, 'output_tokens': 1039, 'total_tokens': 1241, 'input_token_details': {'audio': 0, 'cache_read': 0}, 'output_token_details': {'audio': 0, 'reasoning': 896}})], 'memory': MemoryManager(short_term=ShortTermMemory(max_size=20, entries=[MemoryEntry(content='User: \u6211\u7684\u751f\u65e5\u662f9.20', timestamp=datetime.datetime(2025, 10, 18, 16, 38, 38, 87251), importance=1.0, tags=['user_input'], source='conversation'), MemoryEntry(content='Assistant: \u592a\u597d\u4e86\u2014\u2014\u4f60\u751f\u65e5\u662f9\u670820\u65e5\uff01  \\n- \u897f\u65b9\u661f\u5ea7\uff1a\u5904\u5973\u5ea7\uff088\u670823\u65e5\u20139\u670822\u65e5\uff09\u3002  \\n- \u4ece\u4eca\u5929\uff082025-10-18\uff09\u7b97\u8d77\uff0c\u4e0b\u6b21\u751f\u65e5\u8fd8\u6709 337 \u5929\uff082026-09-20\uff09\u3002  \\n- \u5982\u679c\u544a\u8bc9\u6211\u51fa\u751f\u5e74\u4efd\uff0c\u6211\u53ef\u4ee5\u5e2e\u4f60\u7b97\u5c5e\u76f8\u3001\u5e74\u9f84\u6216\u63d0\u4f9b\u66f4\u4e2a\u6027\u5316\u7684\u5efa\u8bae\u3002  \\n\\n\u9700\u8981\u6211\u5e2e\u4f60\u505a\u4ec0\u4e48\uff1f\u6bd4\u5982\u8bbe\u7f6e\u63d0\u9192\uff08\u6559\u4f60\u600e\u4e48\u5728\u624b\u673a/\u65e5\u5386\u91cc\u8bbe\u7f6e\uff09\u3001\u51c6\u5907\u793c\u7269/\u6d3e\u5bf9\u70b9\u5b50\u3001\u5199\u795d\u798f\u6587\u6848\u6216\u67e5\u5f53\u65e5\u7684\u661f\u5ea7\u8fd0\u52bf\uff1f', timestamp=datetime.datetime(2025, 10, 18, 16, 38, 38, 87276), importance=1.0, tags=['assistant_response'], source='conversation')]), long_term=LongTermMemory(max_summaries=50, entries=[], ttl_days=30))}",
+      "channel_versions": {
+        "__start__": 2,
+        "messages": 3,
+        "branch:to:call_model": 3,
+        "memory": 3
+      },
+      "versions_seen": {
+        "__input__": {},
+        "__start__": {
+          "__start__": 1
+        },
+        "call_model": {
+          "branch:to:call_model": 2
+        }
+      },
+      "updated_channels": [
+        "memory",
+        "messages"
+      ]
+    },
+    "metadata": {
+      "source": "loop",
+      "step": 1,
+      "parents": {}
+    },
+    "new_versions": {
+      "messages": 3,
+      "branch:to:call_model": 3,
+      "memory": 3
+    }
+  },
+  {
+    "thread_id": "thread-78a4d6fa-71ef-4ca5-8f26-483b23e5bcf3",
+    "checkpoint_id": 2,
+    "timestamp": "2025-10-18T16:38:43.796652",
+    "values": {
+      "v": 4,
+      "ts": "2025-10-18T08:38:43.796527+00:00",
+      "id": "1f0abfdd-b02f-66ee-8002-26a92581d3bb",
+      "channel_values": "{'__start__': {'messages': [HumanMessage(content='\u6211\u7684\u751f\u65e5\u662f9.20', additional_kwargs={}, response_metadata={}, id='5509f253-ebcf-46b7-82f8-a9d235fb328e'), AIMessage(content='\u592a\u597d\u4e86\u2014\u2014\u4f60\u751f\u65e5\u662f9\u670820\u65e5\uff01  \\n- \u897f\u65b9\u661f\u5ea7\uff1a\u5904\u5973\u5ea7\uff088\u670823\u65e5\u20139\u670822\u65e5\uff09\u3002  \\n- \u4ece\u4eca\u5929\uff082025-10-18\uff09\u7b97\u8d77\uff0c\u4e0b\u6b21\u751f\u65e5\u8fd8\u6709 337 \u5929\uff082026-09-20\uff09\u3002  \\n- \u5982\u679c\u544a\u8bc9\u6211\u51fa\u751f\u5e74\u4efd\uff0c\u6211\u53ef\u4ee5\u5e2e\u4f60\u7b97\u5c5e\u76f8\u3001\u5e74\u9f84\u6216\u63d0\u4f9b\u66f4\u4e2a\u6027\u5316\u7684\u5efa\u8bae\u3002  \\n\\n\u9700\u8981\u6211\u5e2e\u4f60\u505a\u4ec0\u4e48\uff1f\u6bd4\u5982\u8bbe\u7f6e\u63d0\u9192\uff08\u6559\u4f60\u600e\u4e48\u5728\u624b\u673a/\u65e5\u5386\u91cc\u8bbe\u7f6e\uff09\u3001\u51c6\u5907\u793c\u7269/\u6d3e\u5bf9\u70b9\u5b50\u3001\u5199\u795d\u798f\u6587\u6848\u6216\u67e5\u5f53\u65e5\u7684\u661f\u5ea7\u8fd0\u52bf\uff1f', additional_kwargs={}, response_metadata={'finish_reason': 'stop', 'model_name': 'gpt-5-mini-2025-08-07'}, id='run--f9b637de-f308-42ca-9ef2-0e69b40e99e7', usage_metadata={'input_tokens': 202, 'output_tokens': 1039, 'total_tokens': 1241, 'input_token_details': {'audio': 0, 'cache_read': 0}, 'output_token_details': {'audio': 0, 'reasoning': 896}}), HumanMessage(content='\u6211\u7684\u751f\u65e5\u662f\u4ec0\u4e48\u54c8\u54c8', additional_kwargs={}, response_metadata={})], 'memory': MemoryManager(short_term=ShortTermMemory(max_size=20, entries=[MemoryEntry(content='User: \u6211\u7684\u751f\u65e5\u662f9.20', timestamp=datetime.datetime(2025, 10, 18, 16, 38, 38, 87251), importance=1.0, tags=['user_input'], source='conversation'), MemoryEntry(content='Assistant: \u592a\u597d\u4e86\u2014\u2014\u4f60\u751f\u65e5\u662f9\u670820\u65e5\uff01  \\n- \u897f\u65b9\u661f\u5ea7\uff1a\u5904\u5973\u5ea7\uff088\u670823\u65e5\u20139\u670822\u65e5\uff09\u3002  \\n- \u4ece\u4eca\u5929\uff082025-10-18\uff09\u7b97\u8d77\uff0c\u4e0b\u6b21\u751f\u65e5\u8fd8\u6709 337 \u5929\uff082026-09-20\uff09\u3002  \\n- \u5982\u679c\u544a\u8bc9\u6211\u51fa\u751f\u5e74\u4efd\uff0c\u6211\u53ef\u4ee5\u5e2e\u4f60\u7b97\u5c5e\u76f8\u3001\u5e74\u9f84\u6216\u63d0\u4f9b\u66f4\u4e2a\u6027\u5316\u7684\u5efa\u8bae\u3002  \\n\\n\u9700\u8981\u6211\u5e2e\u4f60\u505a\u4ec0\u4e48\uff1f\u6bd4\u5982\u8bbe\u7f6e\u63d0\u9192\uff08\u6559\u4f60\u600e\u4e48\u5728\u624b\u673a/\u65e5\u5386\u91cc\u8bbe\u7f6e\uff09\u3001\u51c6\u5907\u793c\u7269/\u6d3e\u5bf9\u70b9\u5b50\u3001\u5199\u795d\u798f\u6587\u6848\u6216\u67e5\u5f53\u65e5\u7684\u661f\u5ea7\u8fd0\u52bf\uff1f', timestamp=datetime.datetime(2025, 10, 18, 16, 38, 38, 87276), importance=1.0, tags=['assistant_response'], source='conversation')]), long_term=LongTermMemory(max_summaries=50, entries=[], ttl_days=30))}}",
+      "channel_versions": {
+        "__start__": 1
+      },
+      "versions_seen": {
+        "__input__": {}
+      },
+      "updated_channels": [
+        "__start__"
+      ]
+    },
+    "metadata": {
+      "source": "input",
+      "step": 2,
+      "parents": {}
+    },
+    "new_versions": {
+      "__start__": 1
+    }
+  },
+  {
+    "thread_id": "thread-78a4d6fa-71ef-4ca5-8f26-483b23e5bcf3",
+    "checkpoint_id": 3,
+    "timestamp": "2025-10-18T16:38:43.801736",
+    "values": {
+      "v": 4,
+      "ts": "2025-10-18T08:38:43.801674+00:00",
+      "id": "1f0abfdd-b03b-6f70-8003-abcc138e19ef",
+      "channel_values": "{'messages': [HumanMessage(content='\u6211\u7684\u751f\u65e5\u662f9.20', additional_kwargs={}, response_metadata={}, id='5509f253-ebcf-46b7-82f8-a9d235fb328e'), AIMessage(content='\u592a\u597d\u4e86\u2014\u2014\u4f60\u751f\u65e5\u662f9\u670820\u65e5\uff01  \\n- \u897f\u65b9\u661f\u5ea7\uff1a\u5904\u5973\u5ea7\uff088\u670823\u65e5\u20139\u670822\u65e5\uff09\u3002  \\n- \u4ece\u4eca\u5929\uff082025-10-18\uff09\u7b97\u8d77\uff0c\u4e0b\u6b21\u751f\u65e5\u8fd8\u6709 337 \u5929\uff082026-09-20\uff09\u3002  \\n- \u5982\u679c\u544a\u8bc9\u6211\u51fa\u751f\u5e74\u4efd\uff0c\u6211\u53ef\u4ee5\u5e2e\u4f60\u7b97\u5c5e\u76f8\u3001\u5e74\u9f84\u6216\u63d0\u4f9b\u66f4\u4e2a\u6027\u5316\u7684\u5efa\u8bae\u3002  \\n\\n\u9700\u8981\u6211\u5e2e\u4f60\u505a\u4ec0\u4e48\uff1f\u6bd4\u5982\u8bbe\u7f6e\u63d0\u9192\uff08\u6559\u4f60\u600e\u4e48\u5728\u624b\u673a/\u65e5\u5386\u91cc\u8bbe\u7f6e\uff09\u3001\u51c6\u5907\u793c\u7269/\u6d3e\u5bf9\u70b9\u5b50\u3001\u5199\u795d\u798f\u6587\u6848\u6216\u67e5\u5f53\u65e5\u7684\u661f\u5ea7\u8fd0\u52bf\uff1f', additional_kwargs={}, response_metadata={'finish_reason': 'stop', 'model_name': 'gpt-5-mini-2025-08-07'}, id='run--f9b637de-f308-42ca-9ef2-0e69b40e99e7', usage_metadata={'input_tokens': 202, 'output_tokens': 1039, 'total_tokens': 1241, 'input_token_details': {'audio': 0, 'cache_read': 0}, 'output_token_details': {'audio': 0, 'reasoning': 896}}), HumanMessage(content='\u6211\u7684\u751f\u65e5\u662f\u4ec0\u4e48\u54c8\u54c8', additional_kwargs={}, response_metadata={}, id='2b89d626-421f-4ef1-be8f-565ccabbb292')], 'branch:to:call_model': None}",
+      "channel_versions": {
+        "__start__": 2,
+        "messages": 2,
+        "branch:to:call_model": 2
+      },
+      "versions_seen": {
+        "__input__": {},
+        "__start__": {
+          "__start__": 1
+        }
+      },
+      "updated_channels": [
+        "branch:to:call_model",
+        "messages"
+      ]
+    },
+    "metadata": {
+      "source": "loop",
+      "step": 3,
+      "parents": {}
+    },
+    "new_versions": {
+      "__start__": 2,
+      "messages": 2,
+      "branch:to:call_model": 2
+    }
+  },
+  {
+    "thread_id": "thread-78a4d6fa-71ef-4ca5-8f26-483b23e5bcf3",
+    "checkpoint_id": 4,
+    "timestamp": "2025-10-18T16:38:47.552365",
+    "values": {
+      "v": 4,
+      "ts": "2025-10-18T08:38:47.552172+00:00",
+      "id": "1f0abfdd-d400-692e-8004-5a5ddda6b907",
+      "channel_values": "{'messages': [HumanMessage(content='\u6211\u7684\u751f\u65e5\u662f9.20', additional_kwargs={}, response_metadata={}, id='5509f253-ebcf-46b7-82f8-a9d235fb328e'), AIMessage(content='\u592a\u597d\u4e86\u2014\u2014\u4f60\u751f\u65e5\u662f9\u670820\u65e5\uff01  \\n- \u897f\u65b9\u661f\u5ea7\uff1a\u5904\u5973\u5ea7\uff088\u670823\u65e5\u20139\u670822\u65e5\uff09\u3002  \\n- \u4ece\u4eca\u5929\uff082025-10-18\uff09\u7b97\u8d77\uff0c\u4e0b\u6b21\u751f\u65e5\u8fd8\u6709 337 \u5929\uff082026-09-20\uff09\u3002  \\n- \u5982\u679c\u544a\u8bc9\u6211\u51fa\u751f\u5e74\u4efd\uff0c\u6211\u53ef\u4ee5\u5e2e\u4f60\u7b97\u5c5e\u76f8\u3001\u5e74\u9f84\u6216\u63d0\u4f9b\u66f4\u4e2a\u6027\u5316\u7684\u5efa\u8bae\u3002  \\n\\n\u9700\u8981\u6211\u5e2e\u4f60\u505a\u4ec0\u4e48\uff1f\u6bd4\u5982\u8bbe\u7f6e\u63d0\u9192\uff08\u6559\u4f60\u600e\u4e48\u5728\u624b\u673a/\u65e5\u5386\u91cc\u8bbe\u7f6e\uff09\u3001\u51c6\u5907\u793c\u7269/\u6d3e\u5bf9\u70b9\u5b50\u3001\u5199\u795d\u798f\u6587\u6848\u6216\u67e5\u5f53\u65e5\u7684\u661f\u5ea7\u8fd0\u52bf\uff1f', additional_kwargs={}, response_metadata={'finish_reason': 'stop', 'model_name': 'gpt-5-mini-2025-08-07'}, id='run--f9b637de-f308-42ca-9ef2-0e69b40e99e7', usage_metadata={'input_tokens': 202, 'output_tokens': 1039, 'total_tokens': 1241, 'input_token_details': {'audio': 0, 'cache_read': 0}, 'output_token_details': {'audio': 0, 'reasoning': 896}}), HumanMessage(content='\u6211\u7684\u751f\u65e5\u662f\u4ec0\u4e48\u54c8\u54c8', additional_kwargs={}, response_metadata={}, id='2b89d626-421f-4ef1-be8f-565ccabbb292'), AIMessage(content='\u4f60\u521a\u8bf4\u4e86\u2014\u2014\u4f60\u7684\u751f\u65e5\u662f9\u670820\u65e5\u54e6\uff0c\u5904\u5973\u5ea7\uff088/23\u20139/22\uff09\u3002\u54c8\u54c8\uff0c\u8981\u4e0d\u8981\u6211\u5e2e\u4f60\u7b97\u5c5e\u76f8\uff0f\u5e74\u9f84\uff08\u544a\u8bc9\u6211\u51fa\u751f\u5e74\u4efd\uff09\uff0c\u6216\u51c6\u5907\u795d\u798f\u6587\u6848\u3001\u6d3e\u5bf9\u70b9\u5b50\u3001\u63d0\u9192\u8bbe\u7f6e\u4e4b\u7c7b\u7684\uff1f', additional_kwargs={}, response_metadata={'finish_reason': 'stop', 'model_name': 'gpt-5-mini-2025-08-07'}, id='run--33d6157f-97a9-40de-a201-d278efa36bf9', usage_metadata={'input_tokens': 500, 'output_tokens': 327, 'total_tokens': 827, 'input_token_details': {'audio': 0, 'cache_read': 0}, 'output_token_details': {'audio': 0, 'reasoning': 256}})], 'memory': MemoryManager(short_term=ShortTermMemory(max_size=20, entries=[MemoryEntry(content='User: \u6211\u7684\u751f\u65e5\u662f9.20', timestamp=datetime.datetime(2025, 10, 18, 16, 38, 38, 87251), importance=1.0, tags=['user_input'], source='conversation'), MemoryEntry(content='Assistant: \u592a\u597d\u4e86\u2014\u2014\u4f60\u751f\u65e5\u662f9\u670820\u65e5\uff01  \\n- \u897f\u65b9\u661f\u5ea7\uff1a\u5904\u5973\u5ea7\uff088\u670823\u65e5\u20139\u670822\u65e5\uff09\u3002  \\n- \u4ece\u4eca\u5929\uff082025-10-18\uff09\u7b97\u8d77\uff0c\u4e0b\u6b21\u751f\u65e5\u8fd8\u6709 337 \u5929\uff082026-09-20\uff09\u3002  \\n- \u5982\u679c\u544a\u8bc9\u6211\u51fa\u751f\u5e74\u4efd\uff0c\u6211\u53ef\u4ee5\u5e2e\u4f60\u7b97\u5c5e\u76f8\u3001\u5e74\u9f84\u6216\u63d0\u4f9b\u66f4\u4e2a\u6027\u5316\u7684\u5efa\u8bae\u3002  \\n\\n\u9700\u8981\u6211\u5e2e\u4f60\u505a\u4ec0\u4e48\uff1f\u6bd4\u5982\u8bbe\u7f6e\u63d0\u9192\uff08\u6559\u4f60\u600e\u4e48\u5728\u624b\u673a/\u65e5\u5386\u91cc\u8bbe\u7f6e\uff09\u3001\u51c6\u5907\u793c\u7269/\u6d3e\u5bf9\u70b9\u5b50\u3001\u5199\u795d\u798f\u6587\u6848\u6216\u67e5\u5f53\u65e5\u7684\u661f\u5ea7\u8fd0\u52bf\uff1f', timestamp=datetime.datetime(2025, 10, 18, 16, 38, 38, 87276), importance=1.0, tags=['assistant_response'], source='conversation'), MemoryEntry(content='User: \u6211\u7684\u751f\u65e5\u662f\u4ec0\u4e48\u54c8\u54c8', timestamp=datetime.datetime(2025, 10, 18, 16, 38, 47, 550538), importance=1.0, tags=['user_input'], source='conversation'), MemoryEntry(content='Assistant: \u4f60\u521a\u8bf4\u4e86\u2014\u2014\u4f60\u7684\u751f\u65e5\u662f9\u670820\u65e5\u54e6\uff0c\u5904\u5973\u5ea7\uff088/23\u20139/22\uff09\u3002\u54c8\u54c8\uff0c\u8981\u4e0d\u8981\u6211\u5e2e\u4f60\u7b97\u5c5e\u76f8\uff0f\u5e74\u9f84\uff08\u544a\u8bc9\u6211\u51fa\u751f\u5e74\u4efd\uff09\uff0c\u6216\u51c6\u5907\u795d\u798f\u6587\u6848\u3001\u6d3e\u5bf9\u70b9\u5b50\u3001\u63d0\u9192\u8bbe\u7f6e\u4e4b\u7c7b\u7684\uff1f', timestamp=datetime.datetime(2025, 10, 18, 16, 38, 47, 550572), importance=1.0, tags=['assistant_response'], source='conversation')]), long_term=LongTermMemory(max_summaries=50, entries=[], ttl_days=30))}",
+      "channel_versions": {
+        "__start__": 2,
+        "messages": 3,
+        "branch:to:call_model": 3,
+        "memory": 3
+      },
+      "versions_seen": {
+        "__input__": {},
+        "__start__": {
+          "__start__": 1
+        },
+        "call_model": {
+          "branch:to:call_model": 2
+        }
+      },
+      "updated_channels": [
+        "memory",
+        "messages"
+      ]
+    },
+    "metadata": {
+      "source": "loop",
+      "step": 4,
+      "parents": {}
+    },
+    "new_versions": {
+      "messages": 3,
+      "branch:to:call_model": 3,
+      "memory": 3
+    }
+  }
+]

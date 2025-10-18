@@ -60,6 +60,10 @@ class State(InputState):
 
     - Short-term memory: Recent conversation context (limited to recent entries)
     - Long-term memory: Summarized information across sessions
+
+    NOTE: This field is set explicitly during graph execution to ensure
+    memory persists across conversation turns. The default_factory creates
+    a fresh instance when not explicitly provided.
     """
 
     # Additional attributes can be added here as needed.

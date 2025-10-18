@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(python -m pytest:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(kill:*)"
     ],
     "deny": [],
     "ask": []

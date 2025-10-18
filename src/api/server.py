@@ -114,17 +114,40 @@ async def stream_agent_response(
             }
         }
 
-        # 从 checkpoint 中获取之前的状态（包含历史消息）
+        # 从 checkpoint 中获取之前的状态（包含历史消息和内存）
         existing_state = checkpointer.get(config)
         existing_messages = []
+        existing_memory = None
+
         if existing_state and existing_state.checkpoint:
-            existing_messages = existing_state.checkpoint.get("messages", [])
+            # 获取 channel_values（这是实际的状态数据）
+            channel_values = existing_state.checkpoint.get("channel_values", {})
+            existing_messages = channel_values.get("messages", [])
+            existing_memory = channel_values.get("memory")
+
+            print(f"📝 从 checkpoint 加载 {len(existing_messages)} 条消息")
+            if existing_memory:
+                print(f"📚 从 checkpoint 恢复内存:")
+                print(f"   - 短期记忆: {len(existing_memory.short_term.entries)} 条")
+                print(f"   - 长期记忆: {len(existing_memory.long_term.entries)} 条")
+
+            # 调试：打印消息类型和内容
+            for i, msg in enumerate(existing_messages[:3]):  # 只打印前 3 条
+                msg_type = type(msg).__name__
+                content_preview = getattr(msg, 'content', '')[:50] + "..." if len(getattr(msg, 'content', '')) > 50 else getattr(msg, 'content', '')
+                print(f"   消息 {i}: {msg_type} - {content_preview}")
 
         # 准备输入：将新消息添加到历史消息后面
         # 这样 graph 能看到完整的对话历史
         input_data = {
             "messages": existing_messages + [HumanMessage(content=message)]
         }
+
+        # 如果有之前的内存，也传入以确保内存连续性
+        if existing_memory:
+            input_data["memory"] = existing_memory
+
+        print(f"📤 发送 {len(input_data['messages'])} 条消息到 graph")
 
         # 流式调用 graph（使用 context 参数）
         # 不指定初始 input_data，让 graph 从 checkpoint 恢复状态
